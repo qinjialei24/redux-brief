@@ -1,11 +1,11 @@
 {
-  "name": "redux-brief2",
-  "version": "1.0.0",
+  "name": "redux-brief",
+  "version": "0.2.1",
   "description": "make redux easier to use",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/YOUR_GITHUB_USER_NAME/redux-brief2",
+  "repository": "https://github.com/qinjialei24/redux-brief",
   "license": "MIT",
   "keywords": [],
   "scripts": {
@@ -41,7 +41,12 @@
   "engines": {
     "node": ">=10"
   },
-  "dependencies": {},
+  "dependencies": {
+    "immer": "^9.0.2"
+  },
+  "peerDependencies": {
+    "immer": "^9.0.2"
+  },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",

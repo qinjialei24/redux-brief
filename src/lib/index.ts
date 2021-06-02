@@ -61,7 +61,7 @@ export const setActionToStore = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line functional/immutable-data
-    store[moduleName] = reducerModules[moduleName][ACTION_NAME];
+     store[moduleName] = reducerModules[moduleName][ACTION_NAME];
   });
 };
 
@@ -87,15 +87,26 @@ export const storeEnhancer = (createStore: (arg0: any, arg1: any, arg2: any) => 
   return store;
 };
 
-export const run = <ReducerMap>(
-  reducerModules: any,
-  store: any
+export const init = <ReducerMap>(
+  reducerModules: never,
+  store: never
 ) => {
-  Object.keys(reducerModules).forEach((reducerName) => {
-    // eslint-disable-next-line functional/immutable-data
-     reducerModules[reducerName] = generateReducerForCombine(reducerModules[reducerName], store);
-  });
-  return getReducerMap<ReducerMap>(reducerModules)
-};
+  const newReducersForCombine = Object.keys(reducerModules).reduce(
+    (previousValue, reducerName) => ({
+      ...previousValue,
+      reducerName: generateReducerForCombine(reducerModules[reducerName], store),
+    }),
+    {}
+  );
 
-export const  xxx= 1
+  // Object.keys(reducerModules).forEach((reducerName) => {
+  //   reducerModules[reducerName] = generateReducerForCombine(reducerModules[reducerName], store);
+  // });
+
+  const reducerMap = getReducerMap<ReducerMap>(reducerModules);
+
+  return {
+    reducerMap,
+    newReducersForCombine,
+  };
+};
