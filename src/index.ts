@@ -97,5 +97,3 @@ export const run = <ReducerMap>(
   });
   return getReducerMap<ReducerMap>(reducerModules)
 };
-
-export const  xxx= 1
