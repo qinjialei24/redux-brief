@@ -41,13 +41,11 @@
   "engines": {
     "node": ">=10"
   },
-  "dependencies": {
-    "immer": "^9.0.2"
-  },
   "peerDependencies": {
     "immer": "^9.0.2"
   },
   "devDependencies": {
+    "immer": "^9.0.2",
     "@ava/typescript": "^1.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
