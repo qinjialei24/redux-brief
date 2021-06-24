@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es2017",
-    "outDir": "build/module",
+    "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "node",
     "module": "commonjs",
@@ -41,6 +41,9 @@
     "types": [],
     "typeRoots": ["node_modules/@types", "src/types"]
   },
+  "files": [   // 指定待编译文件
+    "./src/index.ts"
+  ],
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false

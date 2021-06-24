@@ -1,10 +1,15 @@
 import produce from 'immer';
 
+import { NAME_SPACE_FLAG } from './constant';
+import { getKey } from './utils';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// eslint-disable-next-line functional/no-let
+let _store: any = {}
+const _actionMap: any = {}
+
 // eslint-disable-next-line functional/no-return-void
-type GetFirstArgFn<F> = F extends (a: infer A1, ...args: infer U) => void ? (a: A1) => void : unknown;
+type GetFirstArgFn<F> = F extends (a: infer A1, ...args: infer _U) => void ? (a: A1) => void : unknown;
+
 
 type GetFirstArgOfObj<T> = { readonly
   [P in keyof T]: GetFirstArgFn<T[P]>;
@@ -14,54 +19,90 @@ export type HandleReducerMap<T> = { readonly
   [P in keyof T]: GetFirstArgOfObj<T[P]>;
 };
 
-const NAME_SPACE_SEPARATOR = '/';
-const ACTION_NAME = 'action';
 
-const getActionMap = (reducerModule: { readonly [x: string]: any; }, namespace: string, store: any) =>
+export type HandleActionMap<T> = { readonly
+  [P in keyof T]: { readonly
+    [P2 in keyof T[P]]: string
+  }
+}
+
+// export type ReducerModule = {
+//   readonly namespace: string
+//   readonly state: Record<string, any>
+//   // eslint-disable-next-line functional/no-return-void
+//   readonly reducer: Record<string, (payload: any, state: any) => void>
+// };
+
+
+const REDUCER_KEY = 'reducer';
+
+export const processReducerModules = <ReducerMap>(reducerModules: any) => {
+  const obj = {} as any
+  Object.keys(reducerModules).forEach(reducerName => {
+    // eslint-disable-next-line functional/immutable-data
+    obj[reducerName] = createModel(reducerModules[reducerName])
+  })
+  const reducerMap = getReducerMap<ReducerMap>(obj);
+
+  return {
+    reduxBriefModules: obj,
+    reducerMap,
+    actionMap:_actionMap as HandleActionMap<ReducerMap>
+  }
+}
+
+const getActionMap = (reducerModule: { readonly [x: string]: any }, namespace: string) =>
   Object.keys(reducerModule).reduce((actionMap, actionName) => {
-    const actionType = namespace + NAME_SPACE_SEPARATOR + actionName;
+    const actionNameWithNamespace = namespace + NAME_SPACE_FLAG + actionName;
+    generateActionMap(namespace, actionName, actionNameWithNamespace)
     return {
       ...actionMap,
       [actionName]: (payload: any) => {
-        store.dispatch({
-          type: actionType,
+        _store.dispatch({
+          type: actionNameWithNamespace,
           payload,
-        });
+        } as never);
       },
     };
   }, {});
 
-const getKey = (str: string) => str.substring(str.indexOf(NAME_SPACE_SEPARATOR) + 1, str.length + 1);
+const generateActionMap = (moduleName: string, actionName: string, actionNameWithNamespace: string) => {
+  //todo 检查是否重复
+  // eslint-disable-next-line functional/immutable-data
+  _actionMap[moduleName] = {
+    ..._actionMap[moduleName],
+    [actionName]: actionNameWithNamespace
+  }
+}
+
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const withReducerModule = ({ state, action, reducer, namespace = '' }) =>
+const withReducerModule = ({state, action, reducer, namespace = ''}) =>
   Object.keys(reducer)
-    .map((key) => namespace + NAME_SPACE_SEPARATOR + key)
+    .map((key) => namespace + NAME_SPACE_FLAG + key)
     .includes(action.type)
     ? produce(state, (draft: any) => reducer[getKey(action.type)](action.payload, draft))
     : state;
 
-export const generateReducerForCombine = (model: any, store: any): any => {
-  const { reducer, namespace } = model;
-  const reducerModule = (state = model.state, action: any) => withReducerModule({ state, action, reducer, namespace });
+export const createModel = (model: any) => {
+  const {reducer, namespace} = model;
+  const reducerModule = (state = model.state, action: any) => withReducerModule({state, action, reducer, namespace});
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   // eslint-disable-next-line functional/immutable-data
-  reducerModule[ACTION_NAME] = getActionMap(reducer, namespace, store);
+  reducerModule[REDUCER_KEY] = getActionMap(reducer, namespace);
   return reducerModule;
 };
 
-export const setActionToStore = (
-  store: { readonly [x: string]: any; },
-  reducerModules: { readonly [x: string]: { readonly [x: string]: any; }; }
+export const run = (
+  store: { readonly [x: string]: any },
+  reducerModules: { readonly [x: string]: { readonly [x: string]: any } }
 ) => {
+  _store = store
   Object.keys(reducerModules).forEach((moduleName) => {
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line functional/immutable-data
-    store[moduleName] = reducerModules[moduleName][ACTION_NAME];
+    _store[moduleName] = reducerModules[moduleName][REDUCER_KEY];
   });
 };
 
@@ -69,31 +110,8 @@ export const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReduce
   const obj = {} as any;
   Object.keys(betterReduxModules).forEach((moduleName) => {
     // eslint-disable-next-line functional/immutable-data
-    obj[moduleName] = betterReduxModules[moduleName][ACTION_NAME];
+    obj[moduleName] = betterReduxModules[moduleName][REDUCER_KEY];
   });
   return obj as HandleReducerMap<ReducerMap>;
 };
 
-export const storeEnhancer = (createStore: (arg0: any, arg1: any, arg2: any) => any) => (
-  reducer: any,
-  preloadedState: any,
-  enhancer: any
-) => {
-  const store = createStore(reducer, preloadedState, enhancer);
-  const oldDispatch = store.dispatch;
-  // eslint-disable-next-line functional/immutable-data
-  store.dispatch = (typeOrAction: any, payload: any) =>
-    typeof typeOrAction === 'object' ? oldDispatch(typeOrAction) : oldDispatch({ type: typeOrAction, payload });
-  return store;
-};
-
-export const run = <ReducerMap>(
-  reducerModules: any,
-  store: any
-) => {
-  Object.keys(reducerModules).forEach((reducerName) => {
-    // eslint-disable-next-line functional/immutable-data
-     reducerModules[reducerName] = generateReducerForCombine(reducerModules[reducerName], store);
-  });
-  return getReducerMap<ReducerMap>(reducerModules)
-};
