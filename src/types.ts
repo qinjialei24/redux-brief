@@ -1,6 +1,9 @@
+import { Store } from 'redux';
+
 // eslint-disable-next-line functional/no-return-void
- type GetFirstArgFn<F> = F extends (a: infer A1, ...args: infer _U) => void ? (a: A1) => void : unknown;
- type GetFirstArgOfObj<T> = {
+type GetFirstArgFn<F> = F extends (a: infer A1, ...args: infer _U) => void ? (a: A1) => void : unknown;
+
+type GetFirstArgOfObj<T> = {
   readonly [P in keyof T]: GetFirstArgFn<T[P]>;
 };
 export type HandleReducerMap<T> = { //todo rename
@@ -13,17 +16,17 @@ export type HandleActionMap<T> = {//todo rename
 }
 
 export type RunParams<ReducerModules> = {
-  readonly modules:any,
-  readonly middlewares?:readonly any[]
+  readonly modules: any,
+  readonly middlewares?: readonly any[]
 };
 
 export type RunResult<ReducerModules> = {
-  readonly store:any
-  readonly actions:Record<string, unknown>
+  readonly store: Store
+  readonly actions: Record<string, unknown>
   readonly selectors: Record<string, unknown>
-  readonly reducers:HandleReducerMap<ReducerModules>
+  readonly reducers: HandleReducerMap<ReducerModules>
 };
 
 export type RunFunc<T> = {
-  (options:RunParams<T>):RunResult<T>
+  (options: RunParams<T>): RunResult<T>
 };

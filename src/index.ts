@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {applyMiddleware,combineReducers, createStore} from "redux";
+import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
@@ -102,11 +102,10 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
 
  const run= <T>(options:RunParams<T>):RunResult<T> =>{
    const {modules,middlewares=[]} =options
-   console.log("-> modules", modules);
 
    const {reduxBriefModules,reducers,actionMap} = processReducerModules<T>(modules)
-   const rootReducer =combineReducers(reduxBriefModules)
-   const store= createStore(rootReducer,composeWithDevTools(applyMiddleware(...middlewares)))
+   const rootReducer = combineReducers(reduxBriefModules);
+   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store;
    mountReducerModules(store, reduxBriefModules);
 
    return {
