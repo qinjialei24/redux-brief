@@ -30,11 +30,35 @@ import { countModule,CountModule } from "./modules/count";
 import { run } from "redux-brief";
 
 
-const {store,reducers,actions,selectors} = run({
-  modules:{
-    count:countModule,
+const {
+  store,
+  reducers,
+  actions,
+  selectors
+} = run({
+  modules: {
+    count: countModule,
   },
-  middlewares:[]//例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
+  middlewares: []//例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
 })
+
+```
+
+## 使用
+
+```tsx
+const money = useSelector((state: any) => state.count.money) // 获取值
+
+  < button
+onClick = {()
+=>
+{
+  reducers.count.add(1)
+}
+}>
+add
+< /button>
+
+<span>{money}</span>
 
 ```
