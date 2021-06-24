@@ -1,4 +1,6 @@
 import produce from 'immer';
+import {applyMiddleware,combineReducers, createStore} from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
 import { HandleActionMap, HandleReducerMap } from './types';
@@ -8,9 +10,7 @@ import { getKey } from './utils';
 let _store: any = {}
 const _actionMap: any = {}
 
-
 const REDUCER_KEY = 'reducer';
-
 export const processReducerModules = <ReducerMap>(reducerModules: any) => {
   const obj = {} as any
   Object.keys(reducerModules).forEach(reducerName => {
@@ -60,7 +60,7 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
     ? produce(state, (draft: any) => reducer[getKey(action.type)](action.payload, draft))
     : state;
 
-export const createModel = (model: any) => {
+ const createModel = (model: any) => {
   const {reducer, namespace} = model;
   const reducerModule = (state = model.state, action: any) => withReducerModule({state, action, reducer, namespace});
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -70,7 +70,7 @@ export const createModel = (model: any) => {
   return reducerModule;
 };
 
-export const run = (
+ const run = (
   store: { readonly [x: string]: any },
   reducerModules: { readonly [x: string]: { readonly [x: string]: any } }
 ) => {
@@ -80,8 +80,7 @@ export const run = (
     _store[moduleName] = reducerModules[moduleName][REDUCER_KEY];
   });
 };
-
-export const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> => {
+ const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> => {
   const obj = {} as any;
   Object.keys(betterReduxModules).forEach((moduleName) => {
     // eslint-disable-next-line functional/immutable-data
@@ -90,3 +89,14 @@ export const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReduce
   return obj as HandleReducerMap<ReducerMap>;
 };
 
+export {
+  run,
+  createModel,
+  getReducerMap,
+
+  //redux
+  applyMiddleware,
+  combineReducers,
+  createStore,
+  composeWithDevTools
+}
