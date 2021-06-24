@@ -3,7 +3,12 @@ import {applyMiddleware,combineReducers, createStore} from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
-import { HandleActionMap, HandleReducerMap } from './types';
+import {
+  HandleActionMap,
+  HandleReducerMap,
+  RunParams,
+  RunResult
+} from './types';
 import { getKey } from './utils';
 
 // eslint-disable-next-line functional/no-let
@@ -11,7 +16,9 @@ let _store: any = {}
 const _actionMap: any = {}
 
 const REDUCER_KEY = 'reducer';
-export const processReducerModules = <ReducerMap>(reducerModules: any) => {
+
+
+ const processReducerModules = <ReducerMap>(reducerModules: any) => {
   const obj = {} as any
   Object.keys(reducerModules).forEach(reducerName => {
     // eslint-disable-next-line functional/immutable-data
@@ -70,7 +77,8 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
   return reducerModule;
 };
 
- const run = (
+
+ const mountReducerModules = (
   store: { readonly [x: string]: any },
   reducerModules: { readonly [x: string]: { readonly [x: string]: any } }
 ) => {
@@ -80,6 +88,9 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
     _store[moduleName] = reducerModules[moduleName][REDUCER_KEY];
   });
 };
+
+
+
  const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> => {
   const obj = {} as any;
   Object.keys(betterReduxModules).forEach((moduleName) => {
@@ -89,14 +100,24 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
   return obj as HandleReducerMap<ReducerMap>;
 };
 
+ const run= <T>(options:RunParams<T>):RunResult<T> =>{
+   const {modules,middlewares=[]} =options
+   console.log("-> modules", modules);
+
+   const {reduxBriefModules,reducers,actionMap} = processReducerModules<T>(modules)
+   const rootReducer =combineReducers(reduxBriefModules)
+   const store= createStore(rootReducer,composeWithDevTools(applyMiddleware(...middlewares)))
+   mountReducerModules(store, reduxBriefModules);
+
+   return {
+     store,
+     reducers,
+     selectors:{},
+     actions:actionMap//todo rename actions
+  }
+ }
+
 export {
   run,
   createModel,
-  getReducerMap,
-
-  //redux
-  applyMiddleware,
-  combineReducers,
-  createStore,
-  composeWithDevTools
 }
