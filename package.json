@@ -1,9 +1,9 @@
 {
   "name": "redux-brief",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "make redux easier to use",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "module": "build/module/index.js",
   "repository": "https://github.com/qinjialei24/redux-brief",
   "license": "MIT",
