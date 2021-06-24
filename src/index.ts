@@ -17,11 +17,11 @@ export const processReducerModules = <ReducerMap>(reducerModules: any) => {
     // eslint-disable-next-line functional/immutable-data
     obj[reducerName] = createModel(reducerModules[reducerName])
   })
-  const reducerMap = getReducerMap<ReducerMap>(obj);
+  const reducers = getReducerMap<ReducerMap>(obj);
 
   return {
     reduxBriefModules: obj,
-    reducerMap,
+    reducers,
     actionMap:_actionMap as HandleActionMap<ReducerMap>
   }
 }
