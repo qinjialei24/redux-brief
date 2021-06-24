@@ -118,5 +118,4 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
 
 export {
   run,
-  createModel,
 }
