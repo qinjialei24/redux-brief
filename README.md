@@ -1,16 +1,41 @@
-# redux-brief2
+# redux-brief
+
 > make redux easier to use
 
-# 这个库是对 Redux的轻量级封装，完全兼容已有的 Redux 生态，一行代码不用改，，相比直接使用 Redux ，有如下优点
-## 完全消除 action 的模板代码
-## Typescript 类型安全
-## 执行 reducer 从未如此方便
-## 内置 immer，提升开发体验
+## 这个库是对 Redux的轻量级封装，完全兼容已有的 Redux 生态，无需修改已有代码，相比直接使用 Redux ，有如下优点。
 
+-
+
+完全消除
+action
+的模板代码
+
+-
+
+Typescript
+类型安全
+
+-
+
+内置
+immer，提升开发体验
+
+-
+
+使用
+reducer
+从未如此方便
+
+## Quickstart
+
+```
+yarn add redux-brief
+```
 
 # API
 
 ## 定义一个 Reducer 模块
+
 ```ts
 export interface CountModule {
   namespace: 'count'
@@ -46,19 +71,29 @@ const {
 
 ## 使用
 
-```tsx
-const money = useSelector((state: any) => state.count.money) // 获取值
-
-  < button
-onClick = {()
-=>
-{
-  reducers.count.add(1)
-}
-}>
-add
-< /button>
-
-<span>{money}</span>
-
 ```
+ import { useSelector } from "redux-brief";
+
+ const money = useSelector((state: any) => state.count.money) // 获取值
+
+ <button onClick = { ()=>{ reducers.count.add(1) } }> add </button>
+ <span>{money}</span>
+```
+
+## TODO
+
+- [ ] 
+  export
+  api
+  selectors
+- [ ] 
+  export
+  api
+  actions
+- [ ] 
+  better
+  effect
+- [ ] 
+  code
+  refactor
+
