@@ -14,8 +14,8 @@
 ```
 yarn add redux-brief
 ```
-# API
-## 定义一个 Reducer 模块
+## API
+###步骤1： 定义一个 Reducer 模块
 ```ts
 export interface CountModule {
   namespace: 'count'
@@ -29,29 +29,40 @@ export interface CountModule {
 }
 ```
 
-## 生成 Store
+###步骤2： 生成 Store
 ```ts
 import { countModule,CountModule } from "./modules/count";
 import { run } from "redux-brief";
 
 
-const {
-  store,
-  reducers,
-  actions,
-  selectors
-} = run({
+const {store, reducers,actions, selectors } = run({
   modules: {
     count: countModule,
   },
-  middlewares: []//例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
+  middlewares: [] // 例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
 })
-
 ```
 
-## 使用
+###步骤3： 挂载 Store 到根组件上
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import {Provider} from "redux-brief";
+import {store} from "./store"; // 引入步骤2生成的 Store
 
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+)
 ```
+
+
+### 组件内使用
+
+```tsx
  import { useSelector } from "redux-brief";
 
  const money = useSelector((state: any) => state.count.money) // 获取值
@@ -61,19 +72,9 @@ const {
 ```
 
 ## TODO
+- [ ] export api selectors
+- [ ] export api actions
+- [ ] better effect
+- [ ] code refactor
 
-- [ ] 
-  export
-  api
-  selectors
-- [ ] 
-  export
-  api
-  actions
-- [ ] 
-  better
-  effect
-- [ ] 
-  code
-  refactor
 

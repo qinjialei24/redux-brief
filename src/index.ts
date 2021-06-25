@@ -1,5 +1,6 @@
 import produce from 'immer';
 import { useSelector } from 'react-redux';
+import {Provider} from "react-redux";
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -119,5 +120,6 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
 
 export {
   run,
-  useSelector
+  useSelector,
+  Provider
 }
