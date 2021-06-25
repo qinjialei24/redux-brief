@@ -48,16 +48,21 @@ export const countModule: CountModule= {
 
 ###步骤2： 生成 Store
 ```ts
-import { countModule,CountModule } from "./modules/count";
-import { run } from "redux-brief";
+import {countModule,CountModule} from "./modules/count";
+import {run} from "redux-brief";
+import thunk from 'redux-thunk'
 
+interface ReduxBriefReducers {
+  count:CountModule['reducer']
+}
 
-const {store, reducers,actions, selectors } = run({
-  modules: {
-    count: countModule,
+const {store,reducers} = run<ReduxBriefReducers>({
+  modules:{
+    count:countModule,
   },
   middlewares: [] // 例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
 })
+
 ```
 
 ###步骤3： 挂载 Store 到根组件上
@@ -92,6 +97,7 @@ ReactDOM.render(
 - [ ] export api selectors
 - [ ] export api actions
 - [ ] better effect
+- [ ] auto type infer
 - [ ] code refactor
 
 
