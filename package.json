@@ -28,7 +28,8 @@
     "version": "standard-version",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
     "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish",
-    "preinstall": "node ./check-yarn.js"
+    "preinstall": "node ./check-yarn.js",
+    "publish": "npm publish"
   },
   "engines": {
     "node": ">=10"
