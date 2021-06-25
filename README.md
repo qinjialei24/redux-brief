@@ -29,6 +29,21 @@ export interface CountModule {
     minus: (payload: number, state: CountModule['state']) => void
   }
 }
+
+export const countModule: CountModule= {
+  namespace: 'count',
+  state: {
+    money: 10,
+  },
+  reducer: {
+    add(payload, state) {
+      state.money += payload
+    },
+    minus(payload, state) {
+      state.money -= 1
+    },
+  }
+}
 ```
 
 ###步骤2： 生成 Store
