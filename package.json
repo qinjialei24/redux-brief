@@ -7,7 +7,9 @@
   "module": "build/module/index.js",
   "repository": "https://github.com/qinjialei24/redux-brief",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "redux","immmer","react","reducer"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch:build": "tsc -p tsconfig.json -w",
