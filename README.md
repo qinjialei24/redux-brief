@@ -2,7 +2,7 @@
 
 > make redux easier to use
 
-## 这个库是对 Redux的轻量级封装，完全兼容已有的 Redux 生态，无需修改已有代码，相比直接使用 Redux ，有如下优点。
+## 这个库是对 Redux的轻量级封装，完全兼容已有的 Redux 生态，相比直接使用 Redux ，有如下优点。
 
 - 完全消除 action 的模板代码
 - Typescript 类型安全
