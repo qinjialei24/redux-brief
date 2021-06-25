@@ -1,6 +1,6 @@
 {
   "name": "redux-brief",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "make redux easier to use",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
