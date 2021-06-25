@@ -9,15 +9,12 @@
 - 内置 immer，提升开发体验
 - 使用 reducer 从未如此方便
 
-
-
 ## Quickstart
-
 ```
 yarn add redux-brief
 ```
 ## API
-###步骤1： 定义一个 Reducer 模块
+### 步骤1： 定义一个 Reducer 模块
 ```ts
 export interface CountModule {
   namespace: 'count'
@@ -46,7 +43,7 @@ export const countModule: CountModule= {
 }
 ```
 
-###步骤2： 生成 Store
+### 步骤2： 生成 Store
 ```ts
 import {countModule,CountModule} from "./modules/count";
 import {run} from "redux-brief";
@@ -69,7 +66,7 @@ export {
 }
 ```
 
-###步骤3： 挂载 Store 到根组件上
+### 步骤3： 挂载 Store 到根组件上
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
