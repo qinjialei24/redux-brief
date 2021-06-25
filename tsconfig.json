@@ -13,4 +13,7 @@
   "files": [   // 指定待编译文件
     "./src/index.ts"
   ],
+  "include": [
+    "src"
+  ]
 }
