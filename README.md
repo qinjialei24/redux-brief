@@ -63,6 +63,10 @@ const {store,reducers} = run<ReduxBriefReducers>({
   middlewares: [] // 例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
 })
 
+export {
+  store,
+  reducers,
+}
 ```
 
 ###步骤3： 挂载 Store 到根组件上
@@ -71,7 +75,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import {Provider} from "redux-brief";
-import {store} from "./store"; // 引入步骤2生成的 Store
+import {store} from "./store"; // 引入步骤2生成的 store
 
 ReactDOM.render(
     <Provider store={store}>
@@ -85,7 +89,9 @@ ReactDOM.render(
 ### 组件内使用
 
 ```tsx
- import { useSelector } from "redux-brief";
+import React from 'react';
+import { useSelector} from 'redux-brief'
+import {reducers, store} from "./store";//引入步骤2生成的 store 和 reducers
 
  const money = useSelector((state: any) => state.count.money) // 获取值
 
