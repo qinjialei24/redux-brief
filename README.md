@@ -96,11 +96,4 @@ import {reducers, store} from "./store";//引入步骤2生成的 store 和 reduc
  <span>{money}</span>
 ```
 
-## TODO
-- [ ] export api selectors
-- [ ] export api actions
-- [ ] better effect
-- [ ] auto type infer
-- [ ] code refactor
-
 

@@ -1,6 +1,5 @@
 import produce from 'immer';
-import { useSelector } from 'react-redux';
-import {Provider} from "react-redux";
+import {Provider,useSelector} from "react-redux";
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -107,7 +106,7 @@ const withReducerModule = ({state, action, reducer, namespace = ''}) =>
 
    const {reduxBriefModules,reducers,actionMap} = processReducerModules<T>(modules)
    const rootReducer = combineReducers(reduxBriefModules);
-   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store;
+   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量
    mountReducerModules(store, reduxBriefModules);
 
    return {
