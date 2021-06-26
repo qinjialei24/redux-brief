@@ -1,13 +1,15 @@
 import produce from 'immer';
 import { Provider, useSelector } from 'react-redux';
-import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
 import {
   HandleActionMap,
-  HandleReducerMap, MutableObject,
-  ReduxBriefModule, ReduxBriefStore,
+  HandleReducerMap,
+  MutableObject,
+  ReduxBriefModule,
+  ReduxBriefStore,
   RunParams,
   RunResult
 } from './types';
@@ -20,7 +22,7 @@ const REDUCER_KEY = 'reducer';
 
 
 const processReduxBriefModules = <ReducerMap>(reducerModules: any) => {
-  const obj:Record<string, unknown> = {} ;
+  const obj: Record<string, unknown> = {};
   Object.keys(reducerModules).forEach(reducerName => {
     obj[reducerName] = createReduxBriefModule(reducerModules[reducerName]);
   });
@@ -56,20 +58,19 @@ const generateActionMap = (moduleName: string, actionName: string, actionNameWit
 };
 
 
-
-const withReducerModule = (reducerModule:ReduxBriefModule):Record<string, unknown> =>{
-  const { state, action, reducer, namespace = '' } =reducerModule
-  return  Object.keys(reducer)
+const withReducerModule = (reducerModule: ReduxBriefModule): Record<string, unknown> => {
+  const { state, action, reducer, namespace = '' } = reducerModule;
+  return Object.keys(reducer)
     .map((key) => namespace + NAME_SPACE_FLAG + key)
     .includes(action.type)
     ? produce(state, (draft: unknown) => reducer[getKey(action.type)](action.payload, draft))
     : state;
-}
+};
 
 
 const createReduxBriefModule = (model: any) => {
   const { reducer, namespace } = model;
-  const reducerModule = (state:ReduxBriefModule['state'] = model.state, action: ReduxBriefModule['action']) => withReducerModule({
+  const reducerModule = (state: ReduxBriefModule['state'] = model.state, action: ReduxBriefModule['action']) => withReducerModule({
     state,
     action,
     reducer,
@@ -94,7 +95,7 @@ const mountReducerModules = (
 
 
 const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> => {
-  const obj:MutableObject = {};
+  const obj: MutableObject = {};
   Object.keys(betterReduxModules).forEach((moduleName) => {
     obj[moduleName] = betterReduxModules[moduleName][REDUCER_KEY];
   });
