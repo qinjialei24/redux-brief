@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { Provider, useSelector } from 'react-redux';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
@@ -108,7 +108,6 @@ const run = <T>(options: RunParams<T>): RunResult<T> => {
   const rootReducer = combineReducers(reduxBriefModules as any);
   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as unknown as ReduxBriefStore; // todo 环境变量
   mountReducerModules(store, reduxBriefModules);
-
   return {
     store,
     reducers,
