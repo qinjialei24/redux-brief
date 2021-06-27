@@ -44,7 +44,3 @@ export type Produce = (state: ReduxBriefModule['state'], draft: ReduxBriefModule
 
 export type MutableObject =Record<string, unknown>
 
-export type ReduxBriefStore = {
-  readonly dispatch:(options:ReduxBriefModule['action'])=>void
-} & Record<string, unknown>;
-
