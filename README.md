@@ -16,31 +16,23 @@ yarn add redux-brief
 ## API
 ### 步骤1： 定义一个 Reducer 模块
 ```ts
-export interface CountModule {
-  namespace: 'count'
-  state: {
-    money: number
-  }
-  reducer: {
-    add: (payload: number, state: CountModule['state']) => void
-    minus: (payload: number, state: CountModule['state']) => void
-  }
-}
+import {createModule} from "redux-brief";
 
-export const countModule: CountModule= {
-  namespace: 'count',
-  state: {
-    money: 10,
-  },
-  reducer: {
-    add(payload, state) {
-      state.money += payload
+export const countModule = createModule({
+    state: {
+      money: 10,
     },
-    minus(payload, state) {
-      state.money -= 1
-    },
+    namespace: 'count',
+    reducer: {
+      add(payload, state) {
+        state.money += payload
+      },
+      minus(payload, state) {
+        state.money -= 1
+      },
+    }
   }
-}
+)
 ```
 
 ### 步骤2： 生成 Store
