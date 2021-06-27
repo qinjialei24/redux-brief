@@ -14,48 +14,98 @@
 yarn add redux-brief
 ```
 ## API
-### 步骤1： 定义一个 Reducer 模块
-```ts
-import {createModule} from "redux-brief";
+### 步骤1： 定义 Reducer 模块
 
-export const countModule = createModule({
-    state: {
-      money: 10,
-    },
-    namespace: 'count',
+#### user 模块
+```ts
+import {createModule} from 'redux-brief'
+const namespace ='user'
+const state = {
+  name: '',
+  age: 0
+}
+
+export const userModule = createModule(
+  {
+    namespace,
+    state,
     reducer: {
-      add(payload, state) {
-        state.money += payload
+      setUserName(name:string, state) {
+        state.name = name
       },
-      minus(payload, state) {
-        state.money -= 1
+      setAge(age:number, state) {
+        state.age = age
       },
-    }
+    },
   }
 )
+
+export type UserModuleState = {
+  [namespace]:typeof state
+}
+```
+
+#### count 模块
+
+```tsx
+import {createModule} from "redux-brief";
+const namespace = 'count'
+const state = {
+    money: 10,
+    count: 10,
+    count2: '',
+}
+
+export const countModule = createModule({
+        namespace,
+        state,
+        reducer: {
+            add(payload: number, state) {
+                state.money += payload
+            },
+            add2(payload: string, state) {
+                state.count2 += payload
+            },
+            minus(payload: number, state) {
+                state.money -= 1
+            },
+        }
+    }
+)
+
+export type CountModuleState ={
+    [namespace]: typeof state
+}
+
 ```
 
 ### 步骤2： 生成 Store
 ```ts
-import {countModule,CountModule} from "./modules/count";
+import {countModule, CountModuleState} from "./modules/count";
+import {userModule, UserModuleState} from "./modules/user";
+
 import {run} from "redux-brief";
 import thunk from 'redux-thunk'
 
-interface ReduxBriefReducers {
-  count:CountModule['reducer']
+interface Modules {
+  count:typeof countModule
+  user:typeof userModule
 }
 
-const {store,reducers} = run<ReduxBriefReducers>({
+const {store,reducers} = run<Modules>({
   modules:{
     count:countModule,
+    user:userModule,
   },
-  middlewares: [] // 例如 middlewares:[thunk，saga]，默认集成 redux-devtools-extension
+  middlewares:[thunk]
 })
 
 export {
   store,
   reducers,
 }
+
+export type AppState =UserModuleState & CountModuleState // 保证 useSeletor 的类型 
 ```
 
 ### 步骤3： 挂载 Store 到根组件上
@@ -76,16 +126,57 @@ ReactDOM.render(
 
 
 ### 组件内使用
-
 ```tsx
 import React from 'react';
 import { useSelector} from 'redux-brief'
-import {reducers, store} from "./store";//引入步骤2生成的 store 和 reducers
+import {AppState, reducers, store} from "./store";
 
- const money = useSelector((state: any) => state.count.money) // 获取值
+function App() {
+  const money = useSelector((state: AppState) => state.count.money)
+  const name = useSelector((state: AppState) => state.user.name)
 
- <button onClick = { ()=>{ reducers.count.add(1) } }> add </button>
- <span>{money}</span>
+  function minusAsync() { // 异步场景
+    return (dispatch) => {
+      setTimeout(() => {
+        dispatch({
+          type:'count/minus'
+        });
+      }, 1000);
+    };
+  }
+
+  const renderCount = () => {
+    return (
+      <div>
+        <button onClick={() => {
+          reducers.count.add(1)
+        }}>  加 1 </button>
+        
+        <h1>money:{money}</h1>
+
+        <button onClick={() => {
+          store.dispatch(minusAsync() as any)
+        }}>一秒后减 1</button>
+        
+        <button onClick={() => {
+          reducers.user.setUserName('kobe bryant')
+        }}>
+          设置用户名
+        </button>
+        <h1>name:{name}</h1>
+      </div>
+    )
+  }
+
+  return (
+    <div className="App">
+      {renderCount()}
+    </div>
+  );
+}
+
+export default App;
+
 ```
-
+[完整 demo 项目链接](https://github.com/qinjialei24/xxxx)
 
