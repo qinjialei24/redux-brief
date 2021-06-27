@@ -4,6 +4,7 @@ import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
+import { createModule } from './core';
 import { HandleActionMap, HandleReducerMap, MutableObject, RunParams, RunResult } from './types';
 import { getKey } from './utils';
 
@@ -73,13 +74,13 @@ const mountReducerModules = (
 }
 
 //save all reducer in a map ，so you can call reducer like reducerMap.countModule.add()
-function getReducerMap<ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> {
+function generateReducerMap<ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> {
   const obj: MutableObject = {};
   Object.keys(betterReduxModules).forEach((moduleName) => {
     obj[moduleName] = betterReduxModules[moduleName][REDUCER_KEY];
   });
   return obj as HandleReducerMap<ReducerMap>;
-};
+}
 
 
 function processReducerModules<ReducerMap>(reducerModules: any) {
@@ -87,7 +88,7 @@ function processReducerModules<ReducerMap>(reducerModules: any) {
   Object.keys(reducerModules).forEach(reducerName => {
     reducersToCombine[reducerName] = createReducerModule(reducerModules[reducerName]);
   });
-  const reducerMap = getReducerMap<ReducerMap>(reducersToCombine);
+  const reducerMap = generateReducerMap<ReducerMap>(reducersToCombine);
   return {
     reducersToCombine,
     reducerMap,
@@ -110,6 +111,7 @@ function run<T>(options: RunParams<T>): RunResult<T> {
 };
 
 export {
+  createModule,
   run,
   useSelector,
   Provider
