@@ -14,23 +14,13 @@ export type HandleActionMap<T> = {//todo rename
   }
 }
 
-export type ReduxBriefModule = {
-  readonly namespace: string
-  readonly state: Record<string, unknown>
-  readonly action: {
-    readonly type: string
-    readonly payload: unknown
-  }
-  readonly reducer: Record<string, (payload: unknown, state: unknown) => unknown>
-};
-
 export type RunParams<ReducerModules> = {
   readonly modules: any,
   readonly middlewares?: readonly any[]
 };
 
 export type RunResult<ReducerModules> = {
-  readonly store: Record<string, unknown>
+  readonly store: Store
   readonly actions: Record<string, unknown>
   readonly selectors: Record<string, unknown>
   readonly reducers: HandleReducerMap<ReducerModules>
@@ -39,8 +29,6 @@ export type RunResult<ReducerModules> = {
 export type RunFunc<T> = {
   (options: RunParams<T>): RunResult<T>
 };
-
-export type Produce = (state: ReduxBriefModule['state'], draft: ReduxBriefModule['state']) => ReduxBriefModule['state']
 
 export type MutableObject =Record<string, unknown>
 

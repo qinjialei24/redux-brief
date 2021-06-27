@@ -8,8 +8,8 @@ import { createModule } from './core';
 import { HandleActionMap, HandleReducerMap, MutableObject, RunParams, RunResult } from './types';
 import { getKey } from './utils';
 
-let _store: ReduxBriefStore;
-const _actionMap: any = {};
+let _store: any;
+export const _actionMap: any = {};
 
 const REDUCER_KEY = 'reducer';
 
@@ -38,19 +38,18 @@ function generateActionMap(moduleName: string, actionName: string, actionNameWit
 }
 
 
-const withReducerModule = (reducerModule: ReduxBriefModule): Record<string, unknown> => {
-  const { state, action, reducer, namespace = '' } = reducerModule;
-  return Object.keys(reducer)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const withReducerModule = ({ state, action, reducer, namespace = '' }) =>
+  Object.keys(reducer)
     .map((key) => namespace + NAME_SPACE_FLAG + key)
     .includes(action.type)
-    ? produce(state, (draft: unknown) => reducer[getKey(action.type)](action.payload, draft))
+    ? produce(state, (draft: any) => reducer[getKey(action.type)](action.payload, draft))
     : state;
-};
 
-
-const createReduxBriefModule = (model: any) => {
+function createReducerModule(model: any) {
   const { reducer, namespace } = model;
-  const reducerModule = (state: ReduxBriefModule['state'] = model.state, action: ReduxBriefModule['action']) => withReducerModule({
+  const reducerModule = (state = model.state, action: any) => withReducerModule({
     state,
     action,
     reducer,
@@ -63,8 +62,8 @@ const createReduxBriefModule = (model: any) => {
 };
 
 
-const mountReducerModules = (
-  store: ReduxBriefStore,
+export function mountReducerModules(
+  store: any,
   reducerModules: any
 ) {
   _store = store;

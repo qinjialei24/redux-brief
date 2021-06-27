@@ -1,23 +1,22 @@
 type Options<
   Namespace,
   State,
+  Reducer,
   > = {
   readonly namespace:Namespace
   readonly state:State
-  //todo 类型优化， 这里 payload 由用户传入，未避免使用 any，所以使用 never，本来想使用 unknown,但是类型报错？
-  readonly reducer:Record<string, (payload:never,state:State)=>void>
+  readonly reducer:Reducer
 };
-
-
 
 export function createModule<
   Namespace extends string,
   State extends Record<string, unknown>,
-  >(options:Options<Namespace,State>){
-  return options
+  Reducer extends Record<string, (payload:never,state:State)=>void>
+  >(options:Options<Namespace,State,Reducer>){
+  return options as unknown as  Reducer
 }
 
-// createModule({
+// const xxx = createModule({
 //   namespace:'1',
 //   state:{
 //     count:1
@@ -25,6 +24,41 @@ export function createModule<
 //   reducer:{
 //     add(payload:number,state){
 //       state.count+=1
-//     }
+//     },
+//     add2(payload:number,state){
+//       state.count+=2
+//     },
 //   }
 // })
+//
+// const xxx2 = createModule({
+//   namespace:'1',
+//   state:{
+//     count:1
+//   },
+//   reducer:{
+//     add(payload:number,state){
+//       state.count+=1
+//     },
+//     add2(payload:string,state){
+//       state.count+=2
+//     },
+//   }
+// })
+//
+// type MyModules= {
+//   readonly module1:typeof xxx
+//   readonly module2:typeof xxx2
+// };
+//
+// // type xxx2 = typeof xxx & typeof xxx2
+//
+// const q = {} as MyModules
+// //
+// // q.module1.add(1)
+// // q.module2.add2('')
+//
+
+
+
+
