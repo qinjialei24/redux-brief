@@ -16,6 +16,7 @@
   ],
   "globals": { "BigInt": true, "console": true, "WebAssembly": true },
   "rules": {
+    "functional/prefer-readonly-type":"off",
     "functional/immutable-data": "off",
     "functional/no-return-void": "off",
     "functional/no-let": "off",
