@@ -4,15 +4,7 @@ import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
-import {
-  HandleActionMap,
-  HandleReducerMap,
-  MutableObject,
-  ReduxBriefModule,
-  ReduxBriefStore,
-  RunParams,
-  RunResult
-} from './types';
+import { HandleActionMap, HandleReducerMap, MutableObject, RunParams, RunResult } from './types';
 import { getKey } from './utils';
 
 let _store: ReduxBriefStore;
@@ -20,22 +12,8 @@ const _actionMap: any = {};
 
 const REDUCER_KEY = 'reducer';
 
-
-const processReduxBriefModules = <ReducerMap>(reducerModules: any) => {
-  const obj: Record<string, unknown> = {};
-  Object.keys(reducerModules).forEach(reducerName => {
-    obj[reducerName] = createReduxBriefModule(reducerModules[reducerName]);
-  });
-  const reducers = getReducerMap<ReducerMap>(obj);
-  return {
-    reduxBriefModules: obj,
-    reducers,
-    actionMap: _actionMap as HandleActionMap<ReducerMap>
-  };
-};
-
-const getActionMap = (reducerModule: { readonly [x: string]: any }, namespace: string) =>
-  Object.keys(reducerModule).reduce((actionMap, actionName) => {
+function getActionMap(reducerModule: { readonly [x: string]: any }, namespace: string) {
+  return Object.keys(reducerModule).reduce((actionMap, actionName) => {
     const actionNameWithNamespace = namespace + NAME_SPACE_FLAG + actionName;
     generateActionMap(namespace, actionName, actionNameWithNamespace);
     return {
@@ -48,14 +26,15 @@ const getActionMap = (reducerModule: { readonly [x: string]: any }, namespace: s
       }
     };
   }, {});
+}
 
-const generateActionMap = (moduleName: string, actionName: string, actionNameWithNamespace: string) => {
+function generateActionMap(moduleName: string, actionName: string, actionNameWithNamespace: string) {
   //todo 检查是否重复
   _actionMap[moduleName] = {
     ..._actionMap[moduleName],
     [actionName]: actionNameWithNamespace
   };
-};
+}
 
 
 const withReducerModule = (reducerModule: ReduxBriefModule): Record<string, unknown> => {
@@ -86,15 +65,15 @@ const createReduxBriefModule = (model: any) => {
 const mountReducerModules = (
   store: ReduxBriefStore,
   reducerModules: any
-) => {
+) {
   _store = store;
   Object.keys(reducerModules).forEach((moduleName) => {
     _store[moduleName] = reducerModules[moduleName][REDUCER_KEY];
   });
-};
+}
 
-
-const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> => {
+//save all reducer in a map ，so you can call reducer like reducerMap.countModule.add()
+function getReducerMap<ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> {
   const obj: MutableObject = {};
   Object.keys(betterReduxModules).forEach((moduleName) => {
     obj[moduleName] = betterReduxModules[moduleName][REDUCER_KEY];
@@ -102,15 +81,29 @@ const getReducerMap = <ReducerMap>(betterReduxModules: any): HandleReducerMap<Re
   return obj as HandleReducerMap<ReducerMap>;
 };
 
-const run = <T>(options: RunParams<T>): RunResult<T> => {
+
+function processReducerModules<ReducerMap>(reducerModules: any) {
+  const reducersToCombine: MutableObject = {};
+  Object.keys(reducerModules).forEach(reducerName => {
+    reducersToCombine[reducerName] = createReducerModule(reducerModules[reducerName]);
+  });
+  const reducerMap = getReducerMap<ReducerMap>(reducersToCombine);
+  return {
+    reducersToCombine,
+    reducerMap,
+    actionMap: _actionMap as HandleActionMap<ReducerMap>
+  };
+}
+
+function run<T>(options: RunParams<T>): RunResult<T> {
   const { modules, middlewares = [] } = options;
-  const { reduxBriefModules, reducers, actionMap } = processReduxBriefModules<T>(modules);
-  const rootReducer = combineReducers(reduxBriefModules as any);
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as unknown as ReduxBriefStore; // todo 环境变量
-  mountReducerModules(store, reduxBriefModules);
+  const { reducersToCombine, reducerMap, actionMap } = processReducerModules<T>(modules);
+  const rootReducer = combineReducers(reducersToCombine as any);
+  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量
+  mountReducerModules(store, reducersToCombine);
   return {
     store,
-    reducers,
+    reducers: reducerMap,
     selectors: {},
     actions: actionMap//todo rename actions
   };
