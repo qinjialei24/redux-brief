@@ -1,6 +1,6 @@
 {
   "name": "redux-brief",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "make redux easier to use",
   "main": "dist/index.js",
   "types": "dist/api.d.ts",
@@ -16,7 +16,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch:build": "tsc -p tsconfig.json -w",
-    "publish": "npm run build && npm publish",
+    "publish": "npm run version && npm run build && npm publish",
+    "version": "standard-version",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
@@ -28,7 +29,6 @@
     "check-integration-tests": "run-s check-integration-test:*",
     "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
-    "version": "standard-version",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
     "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish",
     "preinstall": "node ./check-yarn.js"
