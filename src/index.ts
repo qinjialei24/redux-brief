@@ -113,14 +113,13 @@ export function mountReducerModules(
 }
 
 //generate all reducers and save in a map ，so you can call reducer like reducerMap.countModule.add()
-function generateReducerMap<ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> {
-  const obj: MutableObject = {};
-  Object.keys(betterReduxModules).forEach((moduleName) => {
-    obj[moduleName] = betterReduxModules[moduleName][REDUCER_KEY];
+function generateReducerMap<ReducerMap>(reducersToCombine: any): HandleReducerMap<ReducerMap> {
+  const reducerMap: MutableObject = {};
+  Object.keys(reducersToCombine).forEach((moduleName) => {
+    reducerMap[moduleName] = reducersToCombine[moduleName][REDUCER_KEY];
   });
-  return obj as HandleReducerMap<ReducerMap>;
+  return reducerMap as HandleReducerMap<ReducerMap>;
 }
-
 
 function processReducerModules<ReducerMap>(reducerModules: any) {
   const reducersToCombine: MutableObject = {};
