@@ -21,7 +21,7 @@ export type RunParams<ReducerModules> = {
 
 export type RunResult<ReducerModules> = {
   readonly store: Store
-  readonly actions: Record<string, unknown>
+  readonly actions: HandleActionMap<ReducerModules>
   readonly selectors: Record<string, unknown>
   readonly reducers: HandleReducerMap<ReducerModules>
 };
@@ -32,3 +32,8 @@ export type RunFunc<T> = {
 
 export type MutableObject =Record<string, unknown>
 
+export type ReducerModuleConfig= {
+  namespace:string
+  state:unknown
+  reducer:Record<string, unknown>
+};

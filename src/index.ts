@@ -5,15 +5,87 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG } from './constant';
 import { createModule } from './core';
-import { HandleActionMap, HandleReducerMap, MutableObject, RunParams, RunResult } from './types';
+import {
+  HandleActionMap,
+  HandleReducerMap,
+  MutableObject,
+  ReducerModuleConfig,
+  RunParams,
+  RunResult
+} from './types';
 import { getKey } from './utils';
 
 let _store: any;
-export const _actionMap: any = {};
+
+
+export const _actionMap: Record<string, Record<string, string>> = {};
 
 const REDUCER_KEY = 'reducer';
 
-function getActionMap(reducerModule: { readonly [x: string]: any }, namespace: string) {
+
+
+
+/*
+generate all actions and save in a map ，so you can use actions like actionMap.count.add,
+it will be added namespace 'count/add' automatically
+
+_actionMap`s shape:
+* count:{
+  add: "count/add"
+  minus: "count/minus"
+* }
+* */
+function generateActionMap(moduleName: string, actionName: string, actionNameWithNamespace: string) {
+  //todo 检查是否重复
+  _actionMap[moduleName] = {
+    ..._actionMap[moduleName],
+    [actionName]: actionNameWithNamespace
+  };
+}
+
+type EnhanceReducerModuleParams= {
+  namespace:string
+  state:unknown
+  action: { type:string,payload:unknown }
+  reducer:Record<string, unknown>
+};
+
+
+/*
+* enhance reducer
+* 1. add namespace
+* 2. add immer
+* */
+function enhanceReducerModule(params:EnhanceReducerModuleParams){
+ const { state, action, reducer, namespace = '' } =params
+  return  Object.keys(reducer)
+    .map((key) => namespace + NAME_SPACE_FLAG + key)
+    .includes(action.type)
+    ? produce(state, (draft: EnhanceReducerModuleParams['state']) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return reducer[getKey(action.type)](action.payload, draft)
+    })
+    : state;
+}
+
+function createReducerModule(reducerModuleConfig: ReducerModuleConfig) {
+  const { reducer, namespace } = reducerModuleConfig;
+  const reducerModule = (state = reducerModuleConfig.state, action: EnhanceReducerModuleParams['action']) =>
+    enhanceReducerModule({
+    state,
+    action,
+    reducer,
+    namespace
+  });
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  reducerModule[REDUCER_KEY] = getActionMap(reducer, namespace);
+  return reducerModule;
+}
+
+
+function getActionMap(reducerModule: ReducerModuleConfig, namespace: string) {
   return Object.keys(reducerModule).reduce((actionMap, actionName) => {
     const actionNameWithNamespace = namespace + NAME_SPACE_FLAG + actionName;
     generateActionMap(namespace, actionName, actionNameWithNamespace);
@@ -29,38 +101,6 @@ function getActionMap(reducerModule: { readonly [x: string]: any }, namespace: s
   }, {});
 }
 
-function generateActionMap(moduleName: string, actionName: string, actionNameWithNamespace: string) {
-  //todo 检查是否重复
-  _actionMap[moduleName] = {
-    ..._actionMap[moduleName],
-    [actionName]: actionNameWithNamespace
-  };
-}
-
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const withReducerModule = ({ state, action, reducer, namespace = '' }) =>
-  Object.keys(reducer)
-    .map((key) => namespace + NAME_SPACE_FLAG + key)
-    .includes(action.type)
-    ? produce(state, (draft: any) => reducer[getKey(action.type)](action.payload, draft))
-    : state;
-
-function createReducerModule(model: any) {
-  const { reducer, namespace } = model;
-  const reducerModule = (state = model.state, action: any) => withReducerModule({
-    state,
-    action,
-    reducer,
-    namespace
-  });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  reducerModule[REDUCER_KEY] = getActionMap(reducer, namespace);
-  return reducerModule;
-};
-
 
 export function mountReducerModules(
   store: any,
@@ -72,7 +112,7 @@ export function mountReducerModules(
   });
 }
 
-//save all reducer in a map ，so you can call reducer like reducerMap.countModule.add()
+//generate all reducers and save in a map ，so you can call reducer like reducerMap.countModule.add()
 function generateReducerMap<ReducerMap>(betterReduxModules: any): HandleReducerMap<ReducerMap> {
   const obj: MutableObject = {};
   Object.keys(betterReduxModules).forEach((moduleName) => {
@@ -91,13 +131,12 @@ function processReducerModules<ReducerMap>(reducerModules: any) {
   return {
     reducersToCombine,
     reducerMap,
-    actionMap: _actionMap as HandleActionMap<ReducerMap>
   };
 }
 
 function run<T>(options: RunParams<T>): RunResult<T> {
   const { modules, middlewares = [] } = options;
-  const { reducersToCombine, reducerMap, actionMap } = processReducerModules<T>(modules);
+  const { reducersToCombine, reducerMap } = processReducerModules<T>(modules);
   const rootReducer = combineReducers(reducersToCombine as any);
   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量
   mountReducerModules(store, reducersToCombine);
@@ -105,7 +144,7 @@ function run<T>(options: RunParams<T>): RunResult<T> {
     store,
     reducers: reducerMap,
     selectors: {},
-    actions: actionMap//todo rename actions
+    actions: _actionMap as HandleActionMap<T>
   };
 };
 
