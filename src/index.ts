@@ -3,7 +3,7 @@ import { Provider, useSelector } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { NAME_SPACE_FLAG } from './constant';
+import { NAME_SPACE_FLAG, REDUCER_KEY } from './constant';
 import { createModule } from './core';
 import {
   HandleActionMap,
@@ -17,12 +17,7 @@ import { getKey } from './utils';
 
 let _store: any;
 
-
 export const _actionMap: Record<string, Record<string, string>> = {};
-
-const REDUCER_KEY = 'reducer';
-
-
 
 
 /*
@@ -49,7 +44,6 @@ type EnhanceReducerModuleParams= {
   action: { type:string,payload:unknown }
   reducer:Record<string, unknown>
 };
-
 
 /*
 * enhance reducer
@@ -84,23 +78,22 @@ function createReducerModule(reducerModuleConfig: ReducerModuleConfig) {
   return reducerModule;
 }
 
-
 function getActionMap(reducerModule: ReducerModuleConfig, namespace: string) {
   return Object.keys(reducerModule).reduce((actionMap, actionName) => {
     const actionNameWithNamespace = namespace + NAME_SPACE_FLAG + actionName;
     generateActionMap(namespace, actionName, actionNameWithNamespace);
+
     return {
       ...actionMap,
       [actionName]: (payload: any) => {
         _store.dispatch({
           type: actionNameWithNamespace,
           payload
-        } as never);
+        });
       }
     };
   }, {});
 }
-
 
 export function mountReducerModules(
   store: any,
@@ -137,15 +130,16 @@ function run<T>(options: RunParams<T>): RunResult<T> {
   const { modules, middlewares = [] } = options;
   const { reducersToCombine, reducerMap } = processReducerModules<T>(modules);
   const rootReducer = combineReducers(reducersToCombine as any);
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量
+  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量,生产环境不打包 dev tools
   mountReducerModules(store, reducersToCombine);
   return {
     store,
     reducers: reducerMap,
     selectors: {},
+    effects: {},
     actions: _actionMap as HandleActionMap<T>
   };
-};
+}
 
 export {
   createModule,

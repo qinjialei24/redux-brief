@@ -23,6 +23,7 @@ export type RunResult<ReducerModules> = {
   readonly store: Store
   readonly actions: HandleActionMap<ReducerModules>
   readonly selectors: Record<string, unknown>
+  readonly effects: Record<string, unknown>
   readonly reducers: HandleReducerMap<ReducerModules>
 };
 
