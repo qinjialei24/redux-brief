@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/qinjialei24/redux-brief/compare/v0.3.10...v0.3.11) (2021-07-01)
+
+
+### Features
+
+* add connect api and delete examples ([3301253](https://github.com/qinjialei24/redux-brief/commit/330125326c27c827e1d2218433b50b38e4297bdc))
+
 ### [0.3.10](https://github.com/qinjialei24/redux-brief/compare/v0.3.4...v0.3.10) (2021-07-01)
 
 
