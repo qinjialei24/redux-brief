@@ -1,9 +1,9 @@
 {
   "name": "redux-brief",
-  "version": "0.3.16",
+  "version": "0.3.18",
   "description": "make redux easier to use",
   "main": "dist/index.js",
-  "types": "dist/api.d.ts",
+  "types": "dist/index.d.ts",
   "module": "build/module/index.js",
   "repository": "https://github.com/qinjialei24/redux-brief",
   "license": "MIT",
@@ -37,7 +37,9 @@
     "node": ">=10"
   },
   "peerDependencies": {
-    "immer": "^9.0.2"
+    "immer": "^9.0.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
     "react-redux": "^7.2.4",
@@ -61,12 +63,18 @@
     "immer": "^9.0.2",
     "jest": "^27.0.5",
     "prettier": "^2.1.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rollup": "^2.52.6",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript": "^1.0.1",
     "standard-version": "^9.3.0",
     "ts-jest": "^27.0.3",
     "ts-loader": "8.2.0",
     "ts-node": "^9.0.0",
+    "tslib": "^2.3.0",
     "typedoc": "^0.19.0",
-    "typescript": "^4.3.4",
+    "typescript": "^4.3.5",
     "webpack": "4.43.0",
     "webpack-cli": "3.3.11"
   },
