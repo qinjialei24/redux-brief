@@ -27,9 +27,9 @@ export type RunParams<ReducerModules> = {
 export type RunResult<ReducerModules> = {
   readonly store: Store;
   readonly actions: HandleActionMap<ReducerModules>;
+  readonly reducers: HandleReducerMap<ReducerModules>;
   readonly selectors: Record<string, unknown>;
   readonly effects: Record<string, unknown>;
-  readonly reducers: HandleReducerMap<ReducerModules>;
 };
 
 export type RunFunc<T> = {
