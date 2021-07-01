@@ -4234,17 +4234,9 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-redux-brief@^0.3.12:
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/redux-brief/-/redux-brief-0.3.12.tgz#0467441975dc15a7d94fd2ac48f0cd4428573565"
-  integrity sha512-/F6bDy5Z2/e5+IXSxMiJHNmypKV8qFcBIiJmGiqW+E6smvizFq6RysQzOo7nwOj+ZRHnPgqCNTotkI5osYrvMA==
-  dependencies:
-    react-redux "^7.2.4"
-    redux "^4.1.0"
-
 redux-devtools-extension@^2.13.9:
   version "2.13.9"
-  resolved "https://registry.npmjs.org/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
   integrity sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A==
 
 redux@^4.0.0, redux@^4.1.0:
