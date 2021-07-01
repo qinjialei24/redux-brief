@@ -11,7 +11,7 @@ import {
   MutableObject,
   ReducerModuleConfig,
   RunParams,
-  RunResult
+  RunResult,
 } from './types';
 import { getKey } from './utils';
 
@@ -30,48 +30,55 @@ _actionMap`s shape:
   minus: "count/minus"
 * }
 * */
-function generateActionMap(moduleName: string, actionName: string, actionNameWithNamespace: string) {
+function generateActionMap(
+  moduleName: string,
+  actionName: string,
+  actionNameWithNamespace: string
+) {
   //todo 检查是否重复
   _actionMap[moduleName] = {
     ..._actionMap[moduleName],
-    [actionName]: actionNameWithNamespace
+    [actionName]: actionNameWithNamespace,
   };
 }
 
-type EnhanceReducerModuleParams= {
-  namespace:string
-  state:unknown
-  action: { type:string,payload:unknown }
-  reducer:Record<string, unknown>
+type EnhanceReducerModuleParams = {
+  namespace: string;
+  state: unknown;
+  action: { type: string; payload: unknown };
+  reducer: Record<string, unknown>;
 };
 
 /*
-* enhance reducer
-* 1. add namespace
-* 2. add immer
-* */
-function enhanceReducerModule(params:EnhanceReducerModuleParams){
- const { state, action, reducer, namespace = '' } =params
-  return  Object.keys(reducer)
+ * enhance reducer
+ * 1. add namespace
+ * 2. add immer
+ * */
+function enhanceReducerModule(params: EnhanceReducerModuleParams) {
+  const { state, action, reducer, namespace = '' } = params;
+  return Object.keys(reducer)
     .map((key) => namespace + NAME_SPACE_FLAG + key)
     .includes(action.type)
     ? produce(state, (draft: EnhanceReducerModuleParams['state']) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return reducer[getKey(action.type)](action.payload, draft)
-    })
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return reducer[getKey(action.type)](action.payload, draft);
+      })
     : state;
 }
 
 function createReducerModule(reducerModuleConfig: ReducerModuleConfig) {
   const { reducer, namespace } = reducerModuleConfig;
-  const reducerModule = (state = reducerModuleConfig.state, action: EnhanceReducerModuleParams['action']) =>
+  const reducerModule = (
+    state = reducerModuleConfig.state,
+    action: EnhanceReducerModuleParams['action']
+  ) =>
     enhanceReducerModule({
-    state,
-    action,
-    reducer,
-    namespace
-  });
+      state,
+      action,
+      reducer,
+      namespace,
+    });
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   reducerModule[REDUCER_KEY] = getActionMap(reducer, namespace);
@@ -88,17 +95,14 @@ function getActionMap(reducerModule: ReducerModuleConfig, namespace: string) {
       [actionName]: (payload: any) => {
         _store.dispatch({
           type: actionNameWithNamespace,
-          payload
+          payload,
         });
-      }
+      },
     };
   }, {});
 }
 
-export function mountReducerModules(
-  store: any,
-  reducerModules: any
-) {
+export function mountReducerModules(store: any, reducerModules: any) {
   _store = store;
   Object.keys(reducerModules).forEach((moduleName) => {
     _store[moduleName] = reducerModules[moduleName][REDUCER_KEY];
@@ -134,14 +138,17 @@ function run<T>(options: RunParams<T>): RunResult<T> {
   const { modules, middlewares = [] } = options;
   const { reducersToCombine, reducerMap } = processReducerModules<T>(modules);
   const rootReducer = combineReducers(reducersToCombine as any);
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares))) as Store; // todo 环境变量,生产环境不打包 dev tools
+  const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(...middlewares))
+  ) as Store; // todo 环境变量,生产环境不打包 dev tools
   mountReducerModules(store, reducersToCombine);
   return {
     store,
     selectors,
     reducers: reducerMap,
     effects: {},
-    actions: _actionMap as HandleActionMap<T>
+    actions: _actionMap as HandleActionMap<T>,
   };
 }
 

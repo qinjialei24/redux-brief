@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ESNEXT",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
-    "module": "es2015",                       /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "declaration": true,                      // 生成声明文件，开启后会自动生成声明文件
-    "removeComments":true,                    // 删除注释
+    "target": "ESNEXT" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */,
+    "module": "es2015" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "declaration": true, // 生成声明文件，开启后会自动生成声明文件
+    "removeComments": true, // 删除注释
     "moduleResolution": "Node",
-    "outDir": "./dist",                       /* Redirect output structure to the directory. */
-    "noEmit": false,                          /* Do not emit outputs. */
-    "strict": true,                           /* Enable all strict type-checking options. */
-    "esModuleInterop": true                   /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "noEmit": false /* Do not emit outputs. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
   },
-  "files": [                                  // 指定待编译文件
+  "files": [
+    // 指定待编译文件
     "./src/index.ts"
   ],
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
