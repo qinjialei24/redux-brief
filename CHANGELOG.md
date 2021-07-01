@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.14](https://github.com/qinjialei24/redux-brief/compare/v0.3.13...v0.3.14) (2021-07-01)
+
+
+### Features
+
+* build redux to source file ([980f54f](https://github.com/qinjialei24/redux-brief/commit/980f54f0e31daf660c3a8400aa950f1c62754b58))
+
 ### 0.3.13 (2021-07-01)
 
 
