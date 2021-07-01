@@ -18,7 +18,7 @@ import { getKey } from './utils';
 let _store: any;
 
 export const _actionMap: Record<string, Record<string, string>> = {};
-
+export const selectors: any = {};
 
 /*
 generate all actions and save in a map ，so you can use actions like actionMap.count.add,
@@ -116,7 +116,11 @@ function generateReducerMap<ReducerMap>(reducersToCombine: any): HandleReducerMa
 
 function processReducerModules<ReducerMap>(reducerModules: any) {
   const reducersToCombine: MutableObject = {};
-  Object.keys(reducerModules).forEach(reducerName => {
+  Object.keys(reducerModules).forEach((reducerName) => {
+    const moduleSelectors = reducerModules[reducerName].selector;
+    Object.keys(moduleSelectors).forEach(
+      (key) => (selectors[key] = () => moduleSelectors[key](_store.getState()))
+    );
     reducersToCombine[reducerName] = createReducerModule(reducerModules[reducerName]);
   });
   const reducerMap = generateReducerMap<ReducerMap>(reducersToCombine);
@@ -134,16 +138,11 @@ function run<T>(options: RunParams<T>): RunResult<T> {
   mountReducerModules(store, reducersToCombine);
   return {
     store,
+    selectors,
     reducers: reducerMap,
-    selectors: {},
     effects: {},
     actions: _actionMap as HandleActionMap<T>
   };
 }
 
-export {
-  createModule,
-  run,
-  useSelector,
-  Provider
-};
+export { createModule, run, useSelector, Provider };
