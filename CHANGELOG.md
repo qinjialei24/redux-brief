@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.16](https://github.com/qinjialei24/redux-brief/compare/v0.3.15...v0.3.16) (2021-07-01)
+
+
+### Features
+
+* add babel-runtime to add polyfill ([76d9902](https://github.com/qinjialei24/redux-brief/commit/76d9902b5267f64758236e148718adfe12af01ed))
+
 ### [0.3.15](https://github.com/qinjialei24/redux-brief/compare/v0.3.14...v0.3.15) (2021-07-01)
 
 
