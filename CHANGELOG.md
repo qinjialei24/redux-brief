@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](https://github.com/qinjialei24/redux-brief/compare/v0.3.4...v0.3.10) (2021-07-01)
+
+
+### Features
+
+* add actions usage and add comment ([ce4ef71](https://github.com/qinjialei24/redux-brief/commit/ce4ef71e4e274f1984fe07b2240fb2f7c97d5ed9))
+* add actions usage and add comment ([daf6d05](https://github.com/qinjialei24/redux-brief/commit/daf6d05885bc1d2187b353c0f5b61134817dfa00))
+* add connect api ([05ebe2d](https://github.com/qinjialei24/redux-brief/commit/05ebe2d3a142415dae56e197fbc4da1e2a12b2ba))
+* add createModule api ([ad226b3](https://github.com/qinjialei24/redux-brief/commit/ad226b37fb2654fd825457af7c597938da576417))
+* format based on prettier ([a49ad31](https://github.com/qinjialei24/redux-brief/commit/a49ad315f0ec768072960eca95572febc10cb34e))
+* format based on prettier ([f1815a4](https://github.com/qinjialei24/redux-brief/commit/f1815a406b660d1c6b3b8e8d2bf4e214a654a9c6))
+* get selectors ([e747a71](https://github.com/qinjialei24/redux-brief/commit/e747a717acc2e34c36cf972f2ed1214a119b6e47))
+
 ### [0.3.9](https://github.com/qinjialei24/redux-brief/compare/v0.3.8...v0.3.9) (2021-06-27)
 
 ### [0.3.8](https://github.com/qinjialei24/redux-brief/compare/v0.3.7...v0.3.8) (2021-06-27)
