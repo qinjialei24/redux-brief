@@ -1,8 +1,10 @@
 import produce from 'immer';
+import { connect, Provider, useSelector } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG, REDUCER_KEY } from './constant';
+import { createModule } from './core';
 import {
   HandleActionMap,
   HandleReducerMap,
@@ -28,7 +30,7 @@ _actionMap`s shape:
   minus: "count/minus"
 * }
 * */
-function generateActionMap(
+export function generateActionMap(
   moduleName: string,
   actionName: string,
   actionNameWithNamespace: string
@@ -154,4 +156,4 @@ function run<T>(options: RunParams<T>): RunResult<T> {
   };
 }
 
-export { run };
+export { createModule, run, useSelector, Provider, connect };
