@@ -3,7 +3,6 @@ import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { NAME_SPACE_FLAG, REDUCER_KEY } from './constant';
-import { createModule } from './core';
 import {
   HandleActionMap,
   HandleReducerMap,
