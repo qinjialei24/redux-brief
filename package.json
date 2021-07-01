@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch:build": "tsc -p tsconfig.json -w",
-    "publish": "npm run build && npm publish",
+    "release": "npm run build && npm publish",
     "version": "standard-version",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
