@@ -119,10 +119,14 @@ function generateReducerMap<ReducerMap>(reducersToCombine: any): HandleReducerMa
 function processReducerModules<ReducerMap>(reducerModules: any) {
   const reducersToCombine: MutableObject = {};
   Object.keys(reducerModules).forEach((reducerName) => {
+    // generate selectors
     const moduleSelectors = reducerModules[reducerName].selector;
-    Object.keys(moduleSelectors).forEach(
-      (key) => (selectors[key] = () => moduleSelectors[key](_store.getState()))
-    );
+    if (moduleSelectors) {
+      Object.keys(moduleSelectors).forEach(
+        (key) => (selectors[key] = () => moduleSelectors[key](_store.getState()))
+      );
+    }
+
     reducersToCombine[reducerName] = createReducerModule(reducerModules[reducerName]);
   });
   const reducerMap = generateReducerMap<ReducerMap>(reducersToCombine);

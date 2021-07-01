@@ -2,7 +2,7 @@ type Options<Namespace, State, Reducer, Selector> = {
   readonly namespace: Namespace;
   readonly state: State;
   readonly reducer: Reducer;
-  readonly selector: Selector;
+  readonly selector?: Selector;
 };
 
 export function createModule<
