@@ -15,7 +15,29 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
-    rules: [{ test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/ }],
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: [
+                [
+                  '@babel/plugin-transform-runtime',
+                  {
+                    corejs: 3,
+                  },
+                ],
+              ],
+            },
+          },
+          { loader: 'ts-loader' },
+        ],
+      },
+    ],
   },
   plugins: [new CleanWebpackPlugin()],
 };
