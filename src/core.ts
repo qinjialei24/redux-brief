@@ -7,18 +7,12 @@ import {
   HandleActionMap,
   HandleReducerMap,
   MutableObject,
+  Options,
   ReducerModuleConfig,
   RunParams,
   RunResult,
 } from './types';
 import { getKey } from './utils';
-
-type Options<Namespace, State, Reducer, Selector> = {
-  readonly namespace: Namespace;
-  readonly state: State;
-  readonly reducer: Reducer;
-  readonly selector?: Selector;
-};
 
 export function createModule<
   Namespace extends string,

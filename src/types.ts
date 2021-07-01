@@ -43,3 +43,10 @@ export type ReducerModuleConfig = {
   state: unknown;
   reducer: Record<string, unknown>;
 };
+
+export type Options<Namespace, State, Reducer, Selector> = {
+  readonly namespace: Namespace;
+  readonly state: State;
+  readonly reducer: Reducer;
+  readonly selector?: Selector;
+};
