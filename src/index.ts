@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { connect, Provider, useSelector } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -152,4 +151,4 @@ function run<T>(options: RunParams<T>): RunResult<T> {
   };
 }
 
-export { createModule, run, useSelector, Provider, connect };
+export { run };

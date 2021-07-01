@@ -1,5 +1,7 @@
+import { connect, Provider, useSelector } from 'react-redux';
+
 import { createModule } from './core';
 
-import { Provider, run, useSelector } from './index';
+import { run } from './index';
 
-export { Provider, run, useSelector, createModule };
+export { Provider, useSelector, connect, createModule, run };

@@ -14,5 +14,6 @@
     // 指定待编译文件
     "./src/index.ts"
   ],
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["examples"]
 }
