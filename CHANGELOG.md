@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.15](https://github.com/qinjialei24/redux-brief/compare/v0.3.14...v0.3.15) (2021-07-01)
+
+
+### Features
+
+* downgrade webpack ts-loader version ([457e763](https://github.com/qinjialei24/redux-brief/commit/457e763f046214a35762a57cfa8e3e57806654fb))
+
 ### [0.3.14](https://github.com/qinjialei24/redux-brief/compare/v0.3.13...v0.3.14) (2021-07-01)
 
 
