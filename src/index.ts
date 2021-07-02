@@ -1,5 +1,3 @@
-import { connect, Provider, useSelector } from 'react-redux';
+export { connect, Provider, useSelector } from 'react-redux';
 
-import { createModule, run } from './core';
-
-export { createModule, run, useSelector, Provider, connect };
+export { createModule, run } from './core';
