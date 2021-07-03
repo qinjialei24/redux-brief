@@ -1,29 +1,28 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { defineConfig } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript';
 
-export default {
+export default defineConfig({
   input: './src/index.ts',
-  external: ['react'],
+  external: ['react', 'react-dom'],
   plugins: [
-    // babel(),
     typescript({
       typescript: require('typescript'),
     }),
-    // sourceMaps(),
     nodeResolve(),
     commonjs(),
-    terser(),
   ],
   output: [
     {
-      format: 'cjs',
-      file: 'lib/bundle.cjs.js',
+      format: 'es',
+      file: 'dist/redux-brief.esm.js',
     },
     {
       format: 'es',
-      file: 'lib/bundle.esm.js',
+      file: 'dist/redux-brief.esm.min.js',
+      plugins: [terser()],
     },
   ],
-};
+});
