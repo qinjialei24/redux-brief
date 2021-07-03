@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.23](https://github.com/qinjialei24/redux-brief/compare/v0.3.20...v0.3.23) (2021-07-03)
+
 ### [0.3.20](https://github.com/qinjialei24/redux-brief/compare/v0.3.11...v0.3.20) (2021-07-03)
 
 
