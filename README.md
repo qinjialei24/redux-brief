@@ -7,7 +7,7 @@
 - 完全消除 action 的模板代码
 - Typescript 类型安全
 - 内置 immer，提升开发体验
-- 使用 reducer 从未如此方便
+- 使用 reducer 更加方便
 
 ## Quickstart
 
