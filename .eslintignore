@@ -2,3 +2,4 @@ jest.config.js
 check-yarn.js
 dist
 examples
+lib
