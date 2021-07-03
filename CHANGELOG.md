@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.20](https://github.com/qinjialei24/redux-brief/compare/v0.3.11...v0.3.20) (2021-07-03)
+
+
+### Features
+
+* add babel-runtime to add polyfill ([76d9902](https://github.com/qinjialei24/redux-brief/commit/76d9902b5267f64758236e148718adfe12af01ed))
+* add release script ([30853d9](https://github.com/qinjialei24/redux-brief/commit/30853d9731e2312c67c895ccb7b4861e04f9e89c))
+* add standard version tools ([c67d30e](https://github.com/qinjialei24/redux-brief/commit/c67d30ed0bfd7366970f78647737cc16825e233e))
+* build redux to source file ([980f54f](https://github.com/qinjialei24/redux-brief/commit/980f54f0e31daf660c3a8400aa950f1c62754b58))
+* downgrade webpack ts-loader version ([457e763](https://github.com/qinjialei24/redux-brief/commit/457e763f046214a35762a57cfa8e3e57806654fb))
+* make redux devtools to be dependency ([64c7278](https://github.com/qinjialei24/redux-brief/commit/64c72789a2d4bb4c3311e1c8f64e756cac7679fa))
+* make selectors optional ([6c9ad5d](https://github.com/qinjialei24/redux-brief/commit/6c9ad5d5d071c313a582f75e6d663f110444a089))
+
 ### [0.3.16](https://github.com/qinjialei24/redux-brief/compare/v0.3.15...v0.3.16) (2021-07-01)
 
 
