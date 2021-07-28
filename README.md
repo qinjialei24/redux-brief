@@ -22,11 +22,21 @@ yarn add redux-brief
 #### user 模块
 
 ```ts
+interface Info{
+  name:string
+  age:number
+}
+
 import { createModule } from 'redux-brief';
 export const namespace = 'user';
 export const state = {
   name: '',
   age: 0,
+  // you can use `as` to use your type define
+  info:{
+    name: '',
+    age: 0
+  } as Info
 };
 
 export const userModule = createModule({
@@ -38,6 +48,9 @@ export const userModule = createModule({
     },
     setAge(age: number, state) {
       state.age = age;
+    },
+    setInfo(info: Info, state) {
+      state.info = info;
     },
   },
 });
