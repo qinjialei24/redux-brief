@@ -1,6 +1,6 @@
 # redux-brief
 
-> make redux easier to use
+> make redux easier to use ,inspired by vuex,rematch
 
 ## 这个库是对 Redux 的轻量级封装，完全兼容已有的 Redux 生态，相比直接使用 Redux ，有如下优点。
 
