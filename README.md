@@ -2,7 +2,7 @@
 
 > make redux easier to use ,inspired by vuex,rematch
 
-## 这个库是对 Redux 的轻量级封装，完全兼容已有的 Redux 生态，相比直接使用 Redux ，有如下优点。
+## 这个库是对 Redux 的轻量级封装，可以兼容已有的 Redux 生态，相比直接使用 Redux ，有如下优点。
 
 - 完全消除 action 的模板代码
 - Typescript 类型安全
