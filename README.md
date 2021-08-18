@@ -59,29 +59,44 @@ export const userModule = createModule({
 #### count 模块
 
 ```tsx
-import { createModule } from 'redux-brief';
-export const namespace = 'count';
-export const state = {
-  money: 10,
-  count: 10,
-  count2: '',
-};
+import {createModule} from "../../redux-brief";
+import {reducers} from "../index";
+
+const state = {
+    money: 10,
+    count: 10,
+    count2: '',
+}
+
+const namespace = 'count'
 
 export const countModule = createModule({
-  namespace,
-  state,
-  reducer: {
-    add(payload: number, state) {
-      state.money += payload;
-    },
-    add2(payload: string, state) {
-      state.count2 += payload;
-    },
-    minus(payload: number, state) {
-      state.money -= 1;
-    },
-  },
-});
+        namespace,
+        state,
+        reducer: { //
+            add(payload: number, state) {
+                state.money += payload
+            },
+            add2(payload: string, state) {
+                state.count2 += payload
+            },
+            minus(payload: number, state) {
+                state.money -= payload
+            },
+        },
+        effect:{//处理异步
+           asyncAdd(payload:number){
+               setTimeout(() => {
+                   reducers.count.add(payload)
+               },1000)
+           }
+        }
+    }
+)
+
+export type CountModuleState ={
+    [namespace]: typeof state
+}
 ```
 
 ### 步骤 2： 生成 Store
@@ -137,59 +152,52 @@ ReactDOM.render(
 
 ```tsx
 import React from 'react';
-import { useSelector } from 'redux-brief';
-import { AppState, reducers, store } from './store';
+import {actions, AppState, effects, reducers, store} from "./store";
+import {useSelector} from "react-redux";
 
 function App() {
-  const money = useSelector((state: AppState) => state.count.money);
-  const name = useSelector((state: AppState) => state.user.name);
+    const money = useSelector((state: AppState) => state.count.money)
+    const name = useSelector((state: AppState) => state.user.name)
 
-  function minusAsync() {
-    // 异步场景
-    return (dispatch) => {
-      setTimeout(() => {
-        dispatch({
-          type: 'count/minus',
-        });
-      }, 1000);
-    };
-  }
+    function minusAsync() {
+        return (dispatch) => {
+            setTimeout(() => {
+                dispatch({
+                    type:actions.count.minus,
+                    payload:10
+                });
+            }, 1000);
+        };
+    }
 
-  const renderCount = () => {
+    const renderCount = () => {
+        return (
+            <div style={{border:'1px solid',padding:'10px'}}>
+                <button onClick={() => {
+                    // effects.asyncAdd(10)
+                    reducers.count.add(2)
+                    // reducers.user.setUserName('kobe bryant')
+                    // reducers.user.setInfo({age:1,address:''})
+                }}>
+                    加
+                </button>
+                <h1>money:{money}</h1>
+                <button onClick={() => {
+                // 异步场景
+                   effects.count.asyncAdd(10)
+                }}>
+                    异步➕
+                </button>
+                <h1>name:{name}</h1>
+            </div>
+        )
+    }
+
     return (
-      <div>
-        <button
-          onClick={() => {
-            reducers.count.add(1);
-          }}
-        >
-          {' '}
-          加 1{' '}
-        </button>
-
-        <h1>money:{money}</h1>
-
-        <button
-          onClick={() => {
-            store.dispatch(minusAsync() as any);
-          }}
-        >
-          一秒后减 1
-        </button>
-
-        <button
-          onClick={() => {
-            reducers.user.setUserName('kobe bryant');
-          }}
-        >
-          设置用户名
-        </button>
-        <h1>name:{name}</h1>
-      </div>
+        <div className="App">
+            {renderCount()}
+        </div>
     );
-  };
-
-  return <div className="App">{renderCount()}</div>;
 }
 
 export default App;
