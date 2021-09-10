@@ -92,6 +92,8 @@ function createReducerModule(reducerModuleConfig: ReducerModuleConfig) {
   return reducerModule;
 }
 
+// function getEffectMap() {}
+
 function getActionMap(reducerModule: ReducerModuleConfig, namespace: string) {
   return Object.keys(reducerModule).reduce((actionMap, actionName) => {
     const actionNameWithNamespace = namespace + NAME_SPACE_FLAG + actionName;

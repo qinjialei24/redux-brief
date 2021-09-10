@@ -189,4 +189,23 @@ function App() {
 export default App;
 ```
 
+## 注意点
+- module 内的 reducer 内不能调用 reducers ，请写在 effect 内
+```tsx
+export const countModule = createModule({
+  namespace,
+  state,
+  reducer: {
+    add(payload: number, state) {
+      state.money += payload;
+      
+      //这行会报错， 因为 redux 限制当存在某一 reducer 执行中，无法同时执行其他 reducer，
+      //相关资料 https://www.jianshu.com/p/69136da080fb
+      reducers.user.setUserName('ssss') 
+
+    },
+  },
+});
+```
+
 [完整 demo 项目链接](https://github.com/qinjialei24/xxxx)

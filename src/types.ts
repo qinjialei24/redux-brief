@@ -38,10 +38,12 @@ export type RunFunc<T> = {
 
 export type MutableObject = Record<string, unknown>;
 
+// eslint-disable-next-line functional/no-mixed-type
 export type ReducerModuleConfig = {
   namespace: string;
   state: unknown;
   reducer: Record<string, unknown>;
+  effect: (dispatch: any) => any;
 };
 
 export type Options<Namespace, State, Reducer, Selector> = {
