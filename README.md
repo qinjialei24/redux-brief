@@ -8,6 +8,7 @@
 - Typescript 类型安全
 - 内置 immer，提升开发体验
 - 使用 reducer 更加方便
+- 兼容已有redux生态，例如redux devtools
 
 ## Quickstart
 
