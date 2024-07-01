@@ -1,16 +1,16 @@
-[中文版本](./README_CN.md)
+[英文版本](./README.md)
 
 # redux-brief
 
-## Make redux easier to use ,inspired by vuex,rematch
+> make redux easier to use ,inspired by vuex,rematch
 
-This library is a lightweight encapsulation of Redux, compatible with the existing Redux ecosystem. Compared to using Redux directly, it offers several advantages:
+## 这个库是对 Redux 的轻量级封装，可以兼容已有的 Redux 生态，相比直接使用 Redux ，有如下优点。
 
-- Completely eliminates boilerplate code for actions
-- TypeScript type safety
-- Built-in Immer for improved development experience
-- Easier usage of reducers
-- Compatibility with the existing Redux ecosystem, including Redux DevTools
+- 完全消除 action 的模板代码
+- Typescript 类型安全
+- 内置 immer，提升开发体验
+- 使用 reducer 更加方便
+- 兼容已有redux生态，例如redux devtools
 
 ## Quickstart
 
@@ -20,9 +20,9 @@ yarn add redux-brief
 
 ## API
 
-### Step 1: Define Reducer Modules
+### 步骤 1： 定义 Reducer 模块
 
-#### User Module
+#### user 模块
 
 ```ts
 interface Info{
@@ -59,7 +59,7 @@ export const userModule = createModule({
 });
 ```
 
-#### Count Module
+#### count 模块
 
 ```tsx
 import {createModule} from "../../redux-brief";
@@ -87,7 +87,7 @@ export const countModule = createModule({
                 state.money -= payload
             },
         },
-        effect:{//handle asynchronous task
+        effect:{//处理异步
            asyncAdd(payload:number){
                setTimeout(() => {
                    reducers.count.add(payload)
@@ -102,7 +102,7 @@ export type CountModuleState ={
 }
 ```
 
-### Step 2: Generate the Store
+### 步骤 2： 生成 Store
 
 ```ts
 import { run } from 'redux-brief';
@@ -134,14 +134,14 @@ const { store, reducers } = run<Modules>({ modules });
 export { store, reducers };
 ```
 
-### Step 3: Mount the Store onto the Root Component
+### 步骤 3： 挂载 Store 到根组件上
 
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'redux-brief';
-import { store } from './store'; // Import the store generated in step 2
+import { store } from './store'; // 引入步骤2生成的 store
 
 ReactDOM.render(
   <Provider store={store}>
@@ -151,7 +151,7 @@ ReactDOM.render(
 );
 ```
 
-### Usage within Components
+### 组件内使用
 
 ```tsx
 import React from 'react';
@@ -168,14 +168,14 @@ function App() {
                 <button onClick={() => {
                     reducers.count.add(2)
                 }}>
-                    Add
+                    加
                 </button>
                 <h1>money:{money}</h1>
                 <button onClick={() => {
-                // Asynchronous scenario
+                // 异步场景
                    effects.count.asyncAdd(10)
                 }}>
-                    Async Add➕
+                    异步➕
                 </button>
                 <h1>name:{name}</h1>
             </div>
@@ -192,9 +192,9 @@ function App() {
 export default App;
 ```
 
-## Caveats
+## 注意点
 
-- Reducers within a module cannot call reducers, these should be placed inside effects.
+- module 内的 reducer 内不能调用 reducers ，请写在 effect 内
 
 ```tsx
 export const countModule = createModule({
@@ -203,9 +203,9 @@ export const countModule = createModule({
   reducer: {
     add(payload: number, state) {
       state.money += payload;
-  
-      // This line will cause an error because Redux restricts dispatching another action while a reducer is executing.
-      // Related reference: https://www.jianshu.com/p/69136da080fb
+    
+      //这行会报错， 因为 redux 限制当存在某一 reducer 执行中，无法同时执行其他 reducer，
+      //相关资料 https://www.jianshu.com/p/69136da080fb
       reducers.user.setUserName('ssss') 
 
     },
@@ -213,4 +213,4 @@ export const countModule = createModule({
 });
 ```
 
-[Link to the Complete Demo Project](https://github.com/qinjialei24/redux-brief-demo)
+[完整 demo 项目链接](https://github.com/qinjialei24/redux-brief-demo)
