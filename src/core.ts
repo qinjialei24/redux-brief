@@ -153,8 +153,8 @@ export function run<T>(options: RunParams<T>): RunResult<T> {
   const rootReducer = combineReducers(reducersToCombine as any);
   const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(...middlewares))
-  ) as Store; // todo 环境变量,生产环境不打包 dev tools
+    composeWithDevTools(applyMiddleware(...middlewares))// 使用环境变量，调节编译，生产环境删除死代码
+  ) as Store; 
   mountReducerModules(store, reducersToCombine);
   return {
     store,
