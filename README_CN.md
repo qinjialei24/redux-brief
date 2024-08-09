@@ -15,7 +15,7 @@
 ## Quickstart
 
 ```
-yarn add redux-brief
+pnpm add redux-brief
 ```
 
 ## API
