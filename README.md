@@ -15,7 +15,7 @@ This library is a lightweight encapsulation of Redux, compatible with the existi
 ## Quickstart
 
 ```
-yarn add redux-brief
+pnpm add redux-brief
 ```
 
 ## API
