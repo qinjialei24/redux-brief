@@ -21,7 +21,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "run-s build test:*",
+    "test": "jest",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
@@ -30,8 +30,7 @@
     "cov:check": "nyc report && nyc check-coverage --lines 100 --functions 100 --branches 100",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
-    "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish",
-    "preinstall": "node ./check-yarn.js"
+    "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish"
   },
   "engines": {
     "node": ">=10"
@@ -94,5 +93,6 @@
     "exclude": [
       "**/*.spec.js"
     ]
-  }
+  },
+  "packageManager": "pnpm@8.9.0+sha256.8f5264ad1d100da11a6add6bb8a94c6f1e913f9e9261b2a551fabefad2ec0fec"
 }
